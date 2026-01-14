@@ -62,7 +62,7 @@
                 pkgs.undmg
               ];
 
-            buildInputs = pkgs.lib.optionals pkgs.stdenvNoCC.isLinux [
+            buildInputs = optionals pkgs.stdenvNoCC.isLinux [
               pkgs.webkitgtk_4_1
             ];
 
