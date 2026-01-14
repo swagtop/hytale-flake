@@ -19,22 +19,14 @@
 
       mkSourceUrl =
         system: version:
-        let
-          systemSpecific =
-            {
-              x86_64-linux = {
-                path = "linux/amd64";
-                extension = "flatpak";
-              };
-              aarch64-darwin = {
-                path = "darwin/arm64";
-                extension = "dmg";
-              };
-            }
-            .${system};
-        in
-          "https://launcher.hytale.com/builds/release/${systemSpecific.path}"
-          + "/hytale-launcher-${version}.${systemSpecific.extension}";
+        "https://launcher.hytale.com/builds/release/"
+        + (
+          {
+            x86_64-linux = "linux/amd64/hytale-launcher-${version}.flatpak";
+            aarch64-darwin = "darwin/arm64/hytale-launcher-${version}.dmg";
+          }
+          .${system}
+        );
     in
     {
       packages = forSystems (
