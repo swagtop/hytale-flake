@@ -16,6 +16,25 @@
         "aarch64-darwin"
       ];
       forEachSupportedSystem = nixpkgs.lib.genAttrs systems;
+
+      mkSourceUrl =
+        system: version:
+        let
+          systemSpecific =
+            {
+              x86_64-linux = {
+                path = "linux/amd64";
+                extension = "flatpak";
+              };
+              aarch64-darwin = {
+                path = "darwin/arm64";
+                extension = "dmg";
+              };
+            }
+            .${system};
+        in
+          "launcher.hytale.com/builds/release/${systemSpecific.path}"
+          + "/hytale-launcher-${version}.${systemSpecific.extension}";
     in
     {
       packages = forEachSupportedSystem (
@@ -30,28 +49,10 @@
             name = "hytale-launcher";
             version = "2026.01.14-563c3d7";
 
-            src = pkgs.fetchurl (
-              let
-                systemSpecific =
-                  {
-                    x86_64-linux = {
-                      path = "linux/amd64";
-                      extension = "flatpak";
-                    };
-                    aarch64-darwin = {
-                      path = "darwin/arm64";
-                      extension = "dmg";
-                    };
-                  }
-                  .${system};
-              in
-              {
-                url =
-                  "launcher.hytale.com/builds/release/${systemSpecific.path}"
-                  + "/hytale-launcher-${finalAttrs.version}.${systemSpecific.extension}";
-                sha256 = (import ./hashes.nix).${system};
-              }
-            );
+            src = pkgs.fetchurl {
+              url = mkSourceUrl system finalAttrs.version;
+              sha256 = (import ./hashes.nix).${system};
+            };
 
             nativeBuildInputs =
               optionals pkgs.stdenv.isLinux [
@@ -109,5 +110,7 @@
       );
 
       formatter = forEachSupportedSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+
+      lib = { inherit mkSourceUrl; };
     };
 }
