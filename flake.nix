@@ -97,7 +97,7 @@
 
             meta = {
               description = "The Hytale launcher.";
-              homepage = "https//hytale.com";
+              homepage = "https://hytale.com";
               license = pkgs.lib.licenses.unfreeRedistributable;
               mainProgram = "hytale-launcher";
               platforms = systems;
