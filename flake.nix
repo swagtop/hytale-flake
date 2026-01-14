@@ -15,7 +15,7 @@
         "x86_64-linux"
         "aarch64-darwin"
       ];
-      forEachSupportedSystem = nixpkgs.lib.genAttrs systems;
+      forSystems = nixpkgs.lib.genAttrs systems;
 
       mkSourceUrl =
         system: version:
@@ -37,7 +37,7 @@
           + "/hytale-launcher-${version}.${systemSpecific.extension}";
     in
     {
-      packages = forEachSupportedSystem (
+      packages = forSystems (
         system:
         let
           pkgs = import nixpkgs {
@@ -111,7 +111,7 @@
         }
       );
 
-      formatter = forEachSupportedSystem (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
+      formatter = forSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       lib = { inherit mkSourceUrl; };
     };
