@@ -33,7 +33,7 @@
             }
             .${system};
         in
-          "launcher.hytale.com/builds/release/${systemSpecific.path}"
+          "https://launcher.hytale.com/builds/release/${systemSpecific.path}"
           + "/hytale-launcher-${version}.${systemSpecific.extension}";
     in
     {
@@ -44,14 +44,16 @@
             inherit system;
             config.allowUnfree = true;
           };
+          hashes = import ./hashes.nix;
 
           hytale-launcher = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+            inherit (hashes) version;
+
             name = "hytale-launcher";
-            version = "2026.01.14-563c3d7";
 
             src = pkgs.fetchurl {
               url = mkSourceUrl system finalAttrs.version;
-              sha256 = (import ./hashes.nix).${system};
+              sha256 = hashes.${system};
             };
 
             nativeBuildInputs =
@@ -81,7 +83,7 @@
 
                   # Get rid of the 'hytale-launcher-wrapper' functionality. We don't
                   # need any auto-updating or flatpak shenanigans going on.
-                  printf "#!/bin/env sh\nexec $out/bin/hytale-launcher" > $out/bin/hytale-launcher-wrapper
+                  printf "#!/bin/sh\nexec $out/bin/hytale-launcher" > $out/bin/hytale-launcher-wrapper
                 ''
               else if pkgs.stdenv.isDarwin then
                 ''
