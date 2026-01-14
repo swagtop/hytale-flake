@@ -81,7 +81,7 @@
 
                   # Get rid of the 'hytale-launcher-wrapper' functionality. We don't
                   # need any auto-updating or flatpak shenanigans going on.
-                  echo "exec $out/bin/hytale-launcher" > $out/bin/hytale-launcher-wrapper
+                  printf "#!/bin/env sh\nexec $out/bin/hytale-launcher" > $out/bin/hytale-launcher-wrapper
                 ''
               else if pkgs.stdenv.isDarwin then
                 ''
