@@ -69,6 +69,8 @@
                 # https://github.com/flatpak/flatpak/issues/126#issuecomment-227068860
                 ''
                   mkdir $out
+
+                  # Unpack the flatpak and put the output files in $out.
                   ostree init --repo=repo --mode=archive-z2
                   ostree static-delta apply-offline --repo=repo $src
                   ostree checkout --repo=repo -U $(basename $(echo repo/objects/*/*.commit | cut -d/ -f3- --output-delimiter= ) .commit) outdir
@@ -77,6 +79,12 @@
                   # Get rid of the 'hytale-launcher-wrapper' functionality. We don't
                   # need any auto-updating or flatpak shenanigans going on.
                   printf "#!/bin/sh\nexec $out/bin/hytale-launcher" > $out/bin/hytale-launcher-wrapper
+                  chmod +x $out/bin/hytale-launcher-wrapper
+
+                  # Set up wrapper script that runs the Hytale launcher with steam-run.
+                  mv $out/bin/hytale-launcher $out/bin/hytale-launcher-unwrapped
+                  printf "#!/bin/sh\nexec ${pkgs.steam-run}/bin/steam-run $out/bin/hytale-launcher-unwrapped" > $out/bin/hytale-launcher
+                  chmod +x $out/bin/hytale-launcher
                 ''
               else if pkgs.stdenv.isDarwin then
                 ''
