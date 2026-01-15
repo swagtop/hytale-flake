@@ -20,13 +20,11 @@
       mkSourceUrl =
         system: version:
         "https://launcher.hytale.com/builds/release/"
-        + (
-          {
-            x86_64-linux = "linux/amd64/hytale-launcher-${version}.flatpak";
-            aarch64-darwin = "darwin/arm64/hytale-launcher-${version}.dmg";
-          }
-          .${system}
-        );
+        + {
+          x86_64-linux = "linux/amd64/hytale-launcher-${version}.flatpak";
+          aarch64-darwin = "darwin/arm64/hytale-launcher-${version}.dmg";
+        }
+        .${system};
     in
     {
       packages = forSystems (
@@ -61,7 +59,10 @@
               pkgs.webkitgtk_4_1
             ];
 
-            phases = [ "installPhase" "fixupPhase" ];
+            phases = [
+              "installPhase"
+              "fixupPhase"
+            ];
 
             installPhase =
               if pkgs.stdenv.isLinux then
