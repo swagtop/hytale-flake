@@ -57,6 +57,7 @@
 
             buildInputs = optionals pkgs.stdenv.isLinux [
               pkgs.webkitgtk_4_1
+              pkgs.steam-run
             ];
 
             phases = [
