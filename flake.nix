@@ -61,7 +61,7 @@
               pkgs.webkitgtk_4_1
             ];
 
-            dontUnpack = true;
+            phases = [ "installPhase" "fixupPhase" ];
 
             installPhase =
               if pkgs.stdenv.isLinux then
