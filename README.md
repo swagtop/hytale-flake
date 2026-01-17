@@ -10,5 +10,5 @@ steam-run. The game works and everything seems to be alright.
 The flatpak version is awesome, since it lets us bring over the .desktop entry,
 and get the icons and such.
 
-To update the source hashes, just run the 'update-hashes.sh' script. Fork it if
-you wish to be doing this regularly on your own.
+The hashes are updated roughly once an hour through GitHub actions, thanks to
+a PR by @istudyatuni.
