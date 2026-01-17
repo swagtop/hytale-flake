@@ -1,0 +1,39 @@
+name: Update to latest release
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: install tools
+        run: |
+          nix profile add "nixpkgs#curl" && curl -V
+          nix profile add "nixpkgs#jq" && jq -V
+
+      - name: update
+        run: ./update-hashes.sh
+      - name: check is updated
+        id: check
+        run: |
+          echo "## Update result" >> $GITHUB_STEP_SUMMARY
+          if [[ ! -z "$(git diff --name-only)" ]]; then
+            echo "updated=true" >> $GITHUB_OUTPUT
+            echo "Updated to $(cat .version)" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "updated=false" >> $GITHUB_OUTPUT
+            echo "Not updated" >> $GITHUB_STEP_SUMMARY
+          fi
+      - name: push
+        if: ${{ steps.check.outputs.updated == 'true' }}
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@users.noreply.github.com'
+          git commit -am "Update to $(cat .version)"
+          git push origin main
