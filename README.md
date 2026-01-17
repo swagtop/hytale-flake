@@ -11,4 +11,4 @@ The flatpak version is awesome, since it lets us bring over the .desktop entry,
 and get the icons and such.
 
 The hashes are updated roughly once an hour through GitHub actions, thanks to
-a PR by @istudyatuni.
+a PR by [istudyatuni](https://github.com/istudyatuni).
