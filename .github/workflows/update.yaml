@@ -17,8 +17,12 @@ jobs:
           nix profile add "nixpkgs#curl" && curl -V
           nix profile add "nixpkgs#jq" && jq -V
 
-      - name: update
+      - name: update inputs
+        run: nix flake update
+
+      - name: update hashes
         run: ./update-hashes.sh
+
       - name: check is updated
         id: check
         run: |
@@ -35,6 +39,6 @@ jobs:
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@users.noreply.github.com'
-          git add ./flake.lock
+          git add flake.lock hashes.nix
           git commit -m "Update to $(cat .version)"
           git push origin main
