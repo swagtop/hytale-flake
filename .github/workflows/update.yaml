@@ -17,9 +17,6 @@ jobs:
           nix profile add "nixpkgs#curl" && curl -V
           nix profile add "nixpkgs#jq" && jq -V
 
-      - name: update inputs
-        run: nix flake update
-
       - name: update hashes
         run: ./update-hashes.sh
 
