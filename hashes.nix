@@ -1,5 +1,5 @@
 {
-  version = "2026.05.26-a9aec87";
-  x86_64-linux = "sha256-0x0qBKvhslldctns7mU/GqVLOUe+ocT7Wt5xfJA1nRI=";
-  aarch64-darwin = "sha256-Qo//lqysp45DALjxhoKtGVGmLQlHyzrhtajoRLRHQzA=";
+  version = "2026.05.29-125f35f";
+  x86_64-linux = "sha256-8B4/DsQXhNyaFI7gTNsOaA3MTXpps9nk/YgLSVip6ms=";
+  aarch64-darwin = "sha256-5b2bImPQBcV/W0/mmXE8VKAOYyh2pWAmTL4e1c//qQE=";
 }
