@@ -12,6 +12,9 @@ jobs:
 
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
+        with:
+          use-flakehub: false
+
       - name: install tools
         run: |
           nix profile add "nixpkgs#curl" && curl -V
