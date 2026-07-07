@@ -1,20 +1,18 @@
 {
   description = "A simple flake for the Hytale launcher.";
 
-  inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  };
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
   outputs =
     { self, nixpkgs }:
     let
-      inherit (nixpkgs.lib)
-        optionals
-        ;
+      inherit (nixpkgs.lib) optionals;
+
       systems = [
         "x86_64-linux"
         "aarch64-darwin"
       ];
+
       forSystems = nixpkgs.lib.genAttrs systems;
 
       mkSourceUrl =
