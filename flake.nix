@@ -90,7 +90,7 @@
                   mkdir $out/{Applications,bin}
                   undmg $src
                   cp ./"Hytale Launcher.app" $out/Applications/
-                  cp ./"Hytale Launcher.app"/Contents/MacOS/hytale-launcher $out/bin/
+                  ln -s $out/Applications/"Hytale Launcher.app"/Contents/MacOS/hytale-launcher $out/bin/hyale-launcher
                 ''
               else
                 throw "Unsupported system.";
@@ -110,6 +110,24 @@
           default = hytale-launcher;
         }
       );
+
+      nixosModules =
+        let
+          hytale-launcher =
+            { pkgs, ... }:
+            let
+              hostSystem = pkgs.stdenv.hostPlatform.system;
+            in
+            {
+              environment.systemPackages = [
+                self.packages.${hostSystem}.default
+              ];
+            };
+        in
+        {
+          inherit hytale-launcher;
+          default = hytale-launcher;
+        };
 
       formatter = forSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
