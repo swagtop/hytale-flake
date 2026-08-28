@@ -45,15 +45,15 @@
             };
 
             nativeBuildInputs =
-              optionals pkgs.stdenv.isLinux [
+              optionals pkgs.stdenv.hostPlatform.isLinux [
                 pkgs.ostree
                 pkgs.autoPatchelfHook
               ]
-              ++ optionals pkgs.stdenv.isDarwin [
+              ++ optionals pkgs.stdenv.hostPlatform.isDarwin [
                 pkgs.undmg
               ];
 
-            buildInputs = optionals pkgs.stdenv.isLinux [
+            buildInputs = optionals pkgs.stdenv.hostPlatform.isLinux [
               pkgs.webkitgtk_4_1
               pkgs.steam-run
             ];
@@ -64,7 +64,7 @@
             ];
 
             installPhase =
-              if pkgs.stdenv.isLinux then
+              if pkgs.stdenv.hostPlatform.isLinux then
                 # https://github.com/flatpak/flatpak/issues/126#issuecomment-227068860
                 ''
                   mkdir $out
@@ -85,7 +85,7 @@
                   printf "#!/bin/sh\nexec ${pkgs.steam-run}/bin/steam-run $out/bin/hytale-launcher-unwrapped" > $out/bin/hytale-launcher
                   chmod +x $out/bin/hytale-launcher
                 ''
-              else if pkgs.stdenv.isDarwin then
+              else if pkgs.stdenv.hostPlatform.isDarwin then
                 ''
                   mkdir $out/{Applications,bin}
                   undmg $src
